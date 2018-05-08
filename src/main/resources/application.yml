@@ -3,9 +3,9 @@ server:
 
 eureka:
   instance:
-    hostname: matlab-server-two.herokuapp.com
+    hostname: ${APP_NAME}.herokuapp.com
   client:
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
-      defaultZone: https://matlab-server-two.herokuapp.com/eureka/
+      defaultZone: ${EUREKA_PEER_URL}/eureka/
