@@ -1,12 +1,7 @@
 server:
-  port: ${PORT:8761}
+  port: ${PORT:9200}
 
-eureka:
-  instance:
-    hostname: ${APP_NAME}.herokuapp.com
-  client:
-    registerWithEureka: true
-    fetchRegistry: true
-    serviceUrl:
-      defaultZone: ${EUREKA_PEER_URL}/eureka/
+spring:
+  application:
+    name: matlab-server
 
