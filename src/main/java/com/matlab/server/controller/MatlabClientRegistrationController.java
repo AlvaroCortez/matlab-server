@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
 import java.util.*;
 
 @RestController
@@ -54,8 +53,9 @@ public class MatlabClientRegistrationController {
     @GetMapping(value = "/v1/execute")
     public String execute() {
         DiscoveryHost host = hosts.get("matlab-client").get(0);
-        URI url = URI.create("http://" + host.getIpAddress() + ":" + host.getPort() + "/v1/test");
-        LOGGER.info("connected url: url.toString={}, url.getPath={}", url.toString(), url.getPath());
+        String url = "http://" + host.getIpAddress() + ":" + host.getPort() + "/v1/test";
+//        URI url = URI.create("http://" + host.getIpAddress() + ":" + host.getPort() + "/v1/test");
+        LOGGER.info("connected url: url={}", url);
         return restTemplate.getForObject(url, String.class);
     }
 }
