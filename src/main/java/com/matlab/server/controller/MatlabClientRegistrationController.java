@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-public class MatlabController {
+public class MatlabClientRegistrationController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MatlabController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MatlabClientRegistrationController.class);
 
     private Map<String, List<DiscoveryHost>> hosts = new HashMap<>();
 
