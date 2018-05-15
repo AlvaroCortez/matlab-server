@@ -4,8 +4,11 @@ import com.matlab.server.model.DiscoveryHost;
 import com.matlab.server.model.DiscoveryHosts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
 import java.util.*;
 
 @RestController
@@ -14,6 +17,9 @@ public class MatlabClientRegistrationController {
     private static final Logger LOGGER = LoggerFactory.getLogger(MatlabClientRegistrationController.class);
 
     private Map<String, List<DiscoveryHost>> hosts = new HashMap<>();
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @GetMapping(value = "/v1/registration/{serviceName}")
     public DiscoveryHosts getHostsByServiceName(@PathVariable("serviceName") String serviceName) {
@@ -43,5 +49,10 @@ public class MatlabClientRegistrationController {
             optHost.ifPresent(tmp::remove);
             hosts.put(serviceName, tmp);
         }
+    }
+
+    @GetMapping(value = "/v1/execute")
+    public String execute() {
+        return restTemplate.getForObject(URI.create(hosts.get("matlab-client").get(0).getIpAddress() + "/v1/test"), String.class);
     }
 }
