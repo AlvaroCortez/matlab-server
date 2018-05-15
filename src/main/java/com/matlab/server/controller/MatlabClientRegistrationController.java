@@ -53,6 +53,6 @@ public class MatlabClientRegistrationController {
 
     @GetMapping(value = "/v1/execute")
     public String execute() {
-        return restTemplate.getForObject(URI.create(hosts.get("matlab-client").get(0).getIpAddress() + "/v1/test"), String.class);
+        return restTemplate.getForObject("http://" + URI.create(hosts.get("matlab-client").get(0).getIpAddress() + "/v1/test"), String.class);
     }
 }
