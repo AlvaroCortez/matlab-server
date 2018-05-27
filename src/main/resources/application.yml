@@ -5,3 +5,10 @@ spring:
   application:
     name: matlab-server
 
+eureka:
+  client:
+    fetch-registry: true
+    service-url:
+      defaultZone: http://192.168.31.177:8761/eureka
+  instance:
+    prefer-ip-address: true

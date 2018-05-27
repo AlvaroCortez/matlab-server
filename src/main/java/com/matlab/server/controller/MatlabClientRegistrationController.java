@@ -54,7 +54,6 @@ public class MatlabClientRegistrationController {
     public String execute() {
         DiscoveryHost host = hosts.get("matlab-client").get(0);
         String url = "http://" + host.getIpAddress() + ":" + host.getPort() + "/v1/test";
-//        URI url = URI.create("http://" + host.getIpAddress() + ":" + host.getPort() + "/v1/test");
         LOGGER.info("connected url: url={}", url);
         return restTemplate.getForObject(url, String.class);
     }
