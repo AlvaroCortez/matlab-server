@@ -1,10 +1,12 @@
 package com.matlab.server.controller;
 
+import com.matlab.server.configuration.MatlabClientConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 @RestController
+@RibbonClient(name = "matlab-client", configuration = MatlabClientConfiguration.class)
 public class MatlabExecuteController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MatlabExecuteController.class);
@@ -55,6 +58,27 @@ public class MatlabExecuteController {
             html += "Port: " + serviceInstance.getPort() + "<br>";
         }
 
+        return html;
+    }
+
+    @GetMapping("/executematlabclient")
+    public String testExecuteMatlabClient() {
+        String serviceId = "matlab-client";
+
+        // (Need!!) eureka.client.fetchRegistry=true
+        List<ServiceInstance> instances = this.discoveryClient.getInstances(serviceId);
+
+        if (instances == null || instances.isEmpty()) {
+            return "No instances for service: " + serviceId;
+        }
+        String html = "<h2>Instances for Service Id: " + serviceId + "</h2>";
+
+        for (ServiceInstance serviceInstance : instances) {
+            html += "<h3>Instance :" + serviceInstance.getUri() + "</h3>";
+        }
+        String greeting = this.restTemplate.getForObject("http://matlab-client/greeting", String.class);
+        html += "<br>Result: " + greeting;
+//        return String.format("%s!", greeting);
         return html;
     }
 }

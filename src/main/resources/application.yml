@@ -12,3 +12,10 @@ eureka:
       defaultZone: http://192.168.31.177:8761/eureka
   instance:
     prefer-ip-address: true
+
+matlab-client:
+  ribbon:
+    eureka:
+      enabled: true
+    ServerListRefreshInterval: 15000
+    NIWSServerListClassName: com.netflix.niws.loadbalancer.DiscoveryEnabledNIWSServerList
