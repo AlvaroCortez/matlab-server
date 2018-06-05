@@ -17,5 +17,12 @@ matlab-client:
   ribbon:
     eureka:
       enabled: true
-    ServerListRefreshInterval: 15000
+    ServerListRefreshInterval: 1000
     NIWSServerListClassName: com.netflix.niws.loadbalancer.DiscoveryEnabledNIWSServerList
+
+#logging:
+#  level:
+#    root: DEBUG
+#    org.springframework.web: DEBUG
+
+#matlab-server.loadbalancer.availabilityFilteringRule.activeConnectionsLimit: 10
