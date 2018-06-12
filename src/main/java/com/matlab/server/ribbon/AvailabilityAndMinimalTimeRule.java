@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class AvailabilityAndMinimalTimeRule extends AbstractLoadBalancerRule {
@@ -47,19 +48,19 @@ public class AvailabilityAndMinimalTimeRule extends AbstractLoadBalancerRule {
                 return null;
             }
 
-            if (allServers.size() == 1) {
-                chosenServer = allServers.get(0);
-                DiscoveryHost host = repository.findByIpAndPort(chosenServer.getHost(), chosenServer.getPort());
-                if (host.isLock()) {
-                    return null;
-                }
-                host.setLock(true);
-                repository.save(host);
-                return allServers.get(0);
+            DiscoveryHost host = repository.findAll()
+                    .stream()
+                    .min(Comparator.comparing(DiscoveryHost::getTimeMatrix))
+                    .orElse(null);
+            if (host == null) {
+                return null;
             }
-
-//            int nextServerIndex = 0;
-//            chosenServer = allServers.get(nextServerIndex);
+            for (Server allServer : allServers) {
+                if (allServer.getHost().equals(host.getIp()) && allServer.getPort() == host.getPort()) {
+                    chosenServer = allServer;
+                    break;
+                }
+            }
 
             if (chosenServer == null) {
                 /* Transient. */
