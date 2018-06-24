@@ -26,7 +26,9 @@ public class DiscoveryHost {
     private String ip;
     private Integer port;
     private Integer sizeMatrix;
-    private Integer timeMatrix;
+    private Double timeMatrix;
+    private boolean matlabExists;
+    private boolean gpuExists;
     private boolean lock;
 //    private String revision;
 //    private String service;
@@ -47,13 +49,17 @@ public class DiscoveryHost {
             @JsonProperty("ip") String ip,
             @JsonProperty("port") Integer port,
             @JsonProperty("sizeMatrix") Integer sizeMatrix,
-            @JsonProperty("timeMatrix") Integer timeMatrix,
+            @JsonProperty("timeMatrix") Double timeMatrix,
+            @JsonProperty("matlabExists") boolean matlabExists,
+            @JsonProperty("gpuExists") boolean gpuExists,
             @JsonProperty("lock") boolean lock) {
         this.key = new CompositeKey(ip, port);
         this.ip = ip;
         this.port = port;
         this.sizeMatrix = sizeMatrix;
         this.timeMatrix = timeMatrix;
+        this.matlabExists = matlabExists;
+        this.gpuExists = gpuExists;
         this.lock = lock;
     }
 
@@ -64,10 +70,10 @@ public class DiscoveryHost {
 //        this.key = new CompositeKey(ip, port);
 //    }
 
-//    @Override
-//    public String toString() {
-//        return key.toString();
-//    }
+    @Override
+    public String toString() {
+        return key.toString();
+    }
 
     @Getter
     @Setter

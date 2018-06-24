@@ -103,15 +103,15 @@ public class MatlabExecuteController {
 //        html += "<br>Make a Call: " + url;
 //        html += "<br>";
 //        String greeting = this.restTemplate.getForObject("http://matlab-client/greeting", String.class);
-        String greeting = this.restTemplate.getForObject("http://" + serviceInstance.getHost() + ":" + serviceInstance.getPort() + "/v1/matlab", String.class);
+        String result = this.restTemplate.postForObject("http://" + serviceInstance.getHost() + ":" + serviceInstance.getPort() + "/v1/matlab", wrapper, String.class);
 //        String greeting = this.restTemplate.getForObject("http://" + serviceInstance.getHost() + ":" + serviceInstance.getPort() + "/files/result", String.class);
-        html += "<br>Result: " + greeting;
+        html += "<br>Result: " + result;
         DiscoveryHost host = repository.findByIpAndPort(serviceInstance.getHost(), serviceInstance.getPort());
         if (host.isLock()) {
             host.setLock(false);
             repository.save(host);
         }
-        return new ResponseWrapper(serviceInstance.getUri().toString(), greeting, "");
+        return new ResponseWrapper(serviceInstance.getUri().toString(), result, "");
 //        return html;
     }
 }

@@ -50,7 +50,9 @@ public class AvailabilityAndMinimalTimeRule extends AbstractLoadBalancerRule {
 
             DiscoveryHost host = repository.findAll()
                     .stream()
-                    .min(Comparator.comparing(DiscoveryHost::getTimeMatrix))
+                    .filter(DiscoveryHost::isGpuExists)
+                    .filter(DiscoveryHost::isMatlabExists)
+                    .min(Comparator.comparing(discoveryHost -> discoveryHost.getSizeMatrix()/discoveryHost.getTimeMatrix()))
                     .orElse(null);
             if (host == null) {
                 return null;
